@@ -212,3 +212,4 @@ python scripts/load_test.py --workers 8 --agents 1000 --duration 60
 | 2026-09-10 | M6 | COMPLETED | Simulation harness, scenarios A-D, JSON/CSV reports |
 | 2026-09-10 | M7 | COMPLETED | React TS dashboard, 3 tabs, WebSocket streaming |
 | 2026-09-10 | M8 | COMPLETED | Load test, README, ARCHITECTURE.md, ANSWERS.md |
+| 2026-09-10 | M9 | COMPLETED | Distributed hardening, atomic borrower SKIP LOCKED, durable dial tasks, ADRs D29-D34, Vercel telemetry |
