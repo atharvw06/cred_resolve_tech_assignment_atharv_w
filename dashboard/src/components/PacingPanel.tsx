@@ -100,7 +100,7 @@ export const PacingPanel: React.FC<PacingPanelProps> = ({ decisions }) => {
                   </td>
                   <td>
                     {d.clamp_reasons && d.clamp_reasons.length > 0 ? (
-                      d.clamp_reasons.map((r, i) => (
+                      d.clamp_reasons.map((r: string, i: number) => (
                         <span key={i} className="badge badge-reason">
                           {r}
                         </span>

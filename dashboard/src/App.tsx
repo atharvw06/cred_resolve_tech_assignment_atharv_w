@@ -1,183 +1,166 @@
 import React, { useState } from 'react';
 import { useWebSocket } from './hooks/useWebSocket';
-import { AgentGrid } from './components/AgentGrid';
-import { CallFunnel } from './components/CallFunnel';
-import { PacingPanel } from './components/PacingPanel';
-
-type TabType = 'agents' | 'funnel' | 'pacing';
+import { AppHeader } from './components/AppHeader';
+import { PacingControls } from './components/PacingControls';
+import { KPIGrid } from './components/KPIGrid';
+import { OperationsOverview } from './components/OperationsOverview';
+import { WorkforceView } from './components/WorkforceView';
+import { AuditTrail } from './components/AuditTrail';
+import { ConfirmModal } from './components/ConfirmModal';
+import { ToastContainer } from './components/ToastContainer';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('agents');
   const {
     data,
-    isConnected,
+    connectionStatus,
     isSimRunning,
     scenario,
     mode,
+    lastUpdated,
+    toasts,
+    filters,
+    setFilters,
+    removeToast,
     toggleSim,
     resetSim,
     changeScenario,
     changeMode,
   } = useWebSocket();
 
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [activeViewTab, setActiveViewTab] = useState<'overview' | 'workforce' | 'audit'>('overview');
+
   // Compute live executive KPI metrics
-  const totalAgents = Object.values(data.agents).reduce((a, b) => a + b, 0) || 50;
-  const connectedAgents = data.agents.CONNECTED || 0;
-  const utilization = ((connectedAgents / totalAgents) * 100).toFixed(1);
+  const totalAgents = data.agents.length || 50;
+  const connectedAgents = data.agents.filter((a) => a.status === 'CONNECTED').length;
+  const utilization = Number(((connectedAgents / totalAgents) * 100).toFixed(1));
 
   const totalAnswered = data.funnel.ANSWERED || 0;
   const totalAbandoned = data.funnel.ABANDONED || 0;
-  const totalCompleted = data.funnel.COMPLETED || 0;
   const inFlightCalls = (data.funnel.INITIATED || 0) + (data.funnel.RINGING || 0);
+  const connectedConversations = (data.funnel.COMPLETED || 0) + connectedAgents;
 
   const rollingAbandonmentRate =
     totalAnswered + totalAbandoned > 0
-      ? ((totalAbandoned / (totalAnswered + totalAbandoned)) * 100).toFixed(2)
-      : '0.00';
+      ? Number(((totalAbandoned / (totalAnswered + totalAbandoned)) * 100).toFixed(2))
+      : 0.0;
 
-  const isCompliant = Number(rollingAbandonmentRate) < 1.0;
+  const answerRatePct = Number(((totalAnswered / Math.max(1, data.funnel.INITIATED || 1)) * 100).toFixed(1));
+
+  // Count recent interventions
+  const safetyInterventions = data.decisions.filter(
+    (d) => d.clamp_reasons && d.clamp_reasons.length > 0 && d.category !== 'OPERATOR_ACTION'
+  ).length;
 
   return (
     <div className="dashboard-container">
-      {/* Top Header */}
-      <header className="header">
-        <div>
-          <h1 className="brand-title">
-            <span style={{ fontSize: '28px' }}>⚡</span>
-            CredResolve SmartDialer
-          </h1>
-          <p className="brand-subtitle">
-            Autonomous Recovery Engine with Mathematical Safety Controller & RBI Regulatory Firewall
-          </p>
-        </div>
+      {/* 1. Header & Global Operations Filter Bar */}
+      <AppHeader
+        connectionStatus={connectionStatus}
+        lastUpdated={lastUpdated}
+        carrierA={data.carrierA}
+        carrierB={data.carrierB}
+        filters={filters}
+        onFilterChange={(newF) => setFilters((prev) => ({ ...prev, ...newF }))}
+        incidentCount={safetyInterventions}
+      />
 
-        <div className="header-status-group">
-          <div className="carrier-pill">
-            <span style={{ color: '#34d399' }}>●</span> Carrier A: <strong>CLOSED (Healthy)</strong>
-          </div>
-          <div className="carrier-pill">
-            <span style={{ color: scenario === 'D' ? '#fb7185' : '#34d399' }}>●</span> Carrier B: <strong>{scenario === 'D' ? 'CHAOS' : 'CLOSED'}</strong>
-          </div>
-          <div className={`status-badge ${isConnected ? '' : 'demo'}`}>
-            <span
-              className="status-dot"
-              style={{
-                backgroundColor: isConnected ? '#34d399' : '#818cf8',
-                boxShadow: isConnected ? '0 0 10px #34d399' : '0 0 10px #818cf8',
-              }}
-            />
-            {isConnected ? 'LIVE WEBSOCKET STREAM' : 'AUTO-SIMULATOR RUNNING'}
-          </div>
-        </div>
-      </header>
+      {/* 2. Simulation & Pacing Control Console */}
+      <PacingControls
+        scenario={scenario}
+        mode={mode}
+        isSimRunning={isSimRunning}
+        onScenarioChange={changeScenario}
+        onModeChange={changeMode}
+        onTogglePacing={toggleSim}
+        onRequestReset={() => setIsResetModalOpen(true)}
+      />
 
-      {/* Control Toolbar */}
-      <div className="control-toolbar">
-        <div className="toolbar-group">
-          <span className="toolbar-label">Scenarios:</span>
-          {(['A', 'B', 'C', 'D'] as const).map((s) => (
-            <button
-              key={s}
-              className={`chip-button ${scenario === s ? 'active' : ''}`}
-              onClick={() => changeScenario(s)}
-            >
-              Scenario {s} {s === 'A' ? '(20% Ans)' : s === 'B' ? '(50% Ans)' : s === 'C' ? '(70% Stress)' : '(Drift Chaos)'}
-            </button>
-          ))}
-        </div>
+      {/* 3. Executive KPI Cards with Trend Context & Sparklines */}
+      <KPIGrid
+        utilization={utilization}
+        totalAgents={totalAgents}
+        connectedAgents={connectedAgents}
+        abandonmentRate={rollingAbandonmentRate}
+        totalAbandoned={totalAbandoned}
+        inFlightCalls={inFlightCalls}
+        connectedConversations={connectedConversations}
+        answerRatePct={answerRatePct}
+        avgHandlingTimeSec={115}
+        safetyInterventions={safetyInterventions}
+        history={data.history}
+        timeWindow={filters.timeRange}
+      />
 
-        <div className="toolbar-group">
-          <span className="toolbar-label">Pacing Mode:</span>
-          {(['PREDICTIVE', 'PROGRESSIVE'] as const).map((m) => (
-            <button
-              key={m}
-              className={`chip-button ${mode === m ? 'active' : ''}`}
-              onClick={() => changeMode(m)}
-            >
-              {m}
-            </button>
-          ))}
-        </div>
-
-        <div className="toolbar-group">
-          <button className="action-btn btn-primary" onClick={toggleSim}>
-            {isSimRunning ? '⏸ Pause Pacing' : '▶ Resume Pacing'}
-          </button>
-          <button className="action-btn btn-secondary" onClick={resetSim}>
-            🔄 Reset Pool
-          </button>
-        </div>
-      </div>
-
-      {/* KPI Stat Cards */}
-      <div className="kpi-grid">
-        <div className="kpi-card" style={{ borderLeft: '4px solid #6366f1' }}>
-          <div className="kpi-title">Agent Utilization</div>
-          <div className="kpi-value">
-            {utilization}%
-            <span style={{ fontSize: '13px', color: '#34d399', fontWeight: 600 }}>Target: 80%</span>
-          </div>
-          <div className="kpi-sub">{connectedAgents} of {totalAgents} recovery agents on active calls</div>
-        </div>
-
-        <div className="kpi-card" style={{ borderLeft: `4px solid ${isCompliant ? '#10b981' : '#f43f5e'}` }}>
-          <div className="kpi-title">Rolling Abandonment Rate</div>
-          <div className="kpi-value" style={{ color: isCompliant ? '#34d399' : '#fb7185' }}>
-            {rollingAbandonmentRate}%
-            <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '4px', background: isCompliant ? 'rgba(16,185,129,0.15)' : 'rgba(244,63,94,0.15)' }}>
-              {isCompliant ? 'COMPLIANT (<1%)' : 'AIMD CLAMP ACTIVE'}
-            </span>
-          </div>
-          <div className="kpi-sub">Total Abandoned: {totalAbandoned} (Strict 0 Abandonment floor)</div>
-        </div>
-
-        <div className="kpi-card" style={{ borderLeft: '4px solid #06b6d4' }}>
-          <div className="kpi-title">Active Telephony Pipeline</div>
-          <div className="kpi-value">
-            {inFlightCalls}
-            <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>dials</span>
-          </div>
-          <div className="kpi-sub">Originated & Ringing in carrier leg</div>
-        </div>
-
-        <div className="kpi-card" style={{ borderLeft: '4px solid #10b981' }}>
-          <div className="kpi-title">Connected Conversations</div>
-          <div className="kpi-value">
-            {totalCompleted + connectedAgents}
-            <span style={{ fontSize: '13px', color: '#34d399' }}>successful</span>
-          </div>
-          <div className="kpi-sub">Borrowers reached & engaged</div>
-        </div>
-      </div>
-
-      {/* Navigation Tabs */}
-      <nav className="nav-tabs">
+      {/* 4. Section Navigation Tabs */}
+      <nav className="nav-tabs" role="tablist" aria-label="Operations sections">
         <button
-          className={`tab-button ${activeTab === 'agents' ? 'active' : ''}`}
-          onClick={() => setActiveTab('agents')}
+          role="tab"
+          aria-selected={activeViewTab === 'overview'}
+          className={`tab-button ${activeViewTab === 'overview' ? 'active' : ''}`}
+          onClick={() => setActiveViewTab('overview')}
         >
-          Agent State Grid (Live Workforce)
+          <span>📊 Operations Overview & Funnel</span>
         </button>
         <button
-          className={`tab-button ${activeTab === 'funnel' ? 'active' : ''}`}
-          onClick={() => setActiveTab('funnel')}
+          role="tab"
+          aria-selected={activeViewTab === 'workforce'}
+          className={`tab-button ${activeViewTab === 'workforce' ? 'active' : ''}`}
+          onClick={() => setActiveViewTab('workforce')}
         >
-          Call Funnel (Pipeline Conversion)
+          <span>👥 Workforce Matrix & Table ({totalAgents} Agents)</span>
         </button>
         <button
-          className={`tab-button ${activeTab === 'pacing' ? 'active' : ''}`}
-          onClick={() => setActiveTab('pacing')}
+          role="tab"
+          aria-selected={activeViewTab === 'audit'}
+          className={`tab-button ${activeViewTab === 'audit' ? 'active' : ''}`}
+          onClick={() => setActiveViewTab('audit')}
         >
-          Pacing & Safety Audit Trail (Why N Calls?)
+          <span>🛡️ Safety Controller & Operator Audit Trail</span>
         </button>
       </nav>
 
-      {/* Main Tab Content */}
-      <main>
-        {activeTab === 'agents' && <AgentGrid agents={data.agents} />}
-        {activeTab === 'funnel' && <CallFunnel funnel={data.funnel} />}
-        {activeTab === 'pacing' && <PacingPanel decisions={data.decisions} />}
-      </main>
+      {/* 5. Main Section Views */}
+      {activeViewTab === 'overview' && (
+        <OperationsOverview
+          history={data.history}
+          funnel={data.funnel}
+          carrierA={data.carrierA}
+          carrierB={data.carrierB}
+        />
+      )}
+
+      {activeViewTab === 'workforce' && (
+        <WorkforceView
+          agents={data.agents}
+          agentCounts={data.agentCounts}
+        />
+      )}
+
+      {activeViewTab === 'audit' && (
+        <AuditTrail
+          decisions={data.decisions}
+        />
+      )}
+
+      {/* 6. Destructive Reset Confirmation Modal */}
+      <ConfirmModal
+        isOpen={isResetModalOpen}
+        title="Reset Agent Workforce & Dialer Pool"
+        message="This will re-initialize all 50 agent state machines to AVAILABLE, clear in-flight telephony queues, reset the rolling abandonment counter, and log an audit trail entry. This action cannot be undone."
+        confirmLabel="Confirm Destructive Reset"
+        onConfirm={(reason) => {
+          resetSim(reason);
+          setIsResetModalOpen(false);
+        }}
+        onCancel={() => setIsResetModalOpen(false)}
+      />
+
+      {/* 7. Floating Toast Notifications */}
+      <ToastContainer
+        toasts={toasts}
+        onDismiss={removeToast}
+      />
     </div>
   );
 };
