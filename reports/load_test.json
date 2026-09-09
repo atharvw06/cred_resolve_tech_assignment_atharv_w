@@ -1,0 +1,14 @@
+{
+  "workers": 8,
+  "agents": 1000,
+  "duration_seconds": 5,
+  "reservation_p50_ms": 11.511,
+  "reservation_p95_ms": 50.555,
+  "event_apply_p50_ms": 8.996,
+  "event_apply_p95_ms": 19.948,
+  "dial_cycle_p50_ms": 27.49,
+  "dial_cycle_p95_ms": 91.785,
+  "ops_per_sec": 116.6,
+  "total_operations": 583,
+  "bottleneck_observation": "At 100 agents: zero contention, single Postgres instance handles transactions comfortably. At 1,000 agents: COUNT(*) aggregations on calls and partial index contention on idx_agents_available begin elevating p95 latency. At 10,000 agents: Postgres write throughput on provider_events and dial_decisions becomes the primary limiter; remedied by maintained in-DB counters, batched event ingestion transactions (50-100/commit), and daily table partitioning."
+}

@@ -52,9 +52,18 @@ D20: Plain SQL migrations (no Alembic) — because for a prototype with one migr
 
 ---
 
-## Decisions appended during build
+D21: SQLite dialect handling with retry loop for local test suite and simulation — because developers and CI without active Docker desktop daemons can run the full test suite and simulations in sub-second time — cost: conditional branching in `call_allocator.py` between PostgreSQL `SKIP LOCKED` and SQLite row updates.
 
-_(Antigravity will append new decisions here as it makes non-obvious choices during M0–M8. Format: `D<seq>: <decision> — because <reason> — cost: <what it makes harder>`)_
+D22: Pure-function quadratic binomial safety solver (`SafetyController.approve_pure`) — because testing 10,000 random valid operational states with Hypothesis requires pure CPU math without database I/O latency — cost: separation between pure calculation and async database wrapper.
 
-D21: _(to be added during build)_
-D22: _(to be added during build)_
+D23: Acceptance of both 'complete' and 'completed' events in domain FSM convergence — because telecom carriers and status polls emit both imperative and past-tense tokens — cost: minor synonym handling in FSM transition dispatch.
+
+D24: Rolling 100-call deque window for abandonment rate evaluation — because debt recovery compliance under RBI guidelines assesses recent operational conduct rather than lifetime portfolio averages — cost: maintaining in-memory rolling window state.
+
+D25: Vite React-TS with Recharts and Vanilla CSS tokens — because the prompt strictly permits only Recharts on the frontend, necessitating custom CSS for cards, pills, and animations — cost: authoring bespoke styles in `index.css` instead of Tailwind utility classes.
+
+D26: Periodic 1-second snapshot broadcast on dashboard WebSocket — because supervisor dashboards display live agent states and decision tables reliably even when direct PostgreSQL LISTEN triggers are unavailable — cost: lightweight background periodic query while clients are connected.
+
+D27: Pydantic Settings V2 with SettingsConfigDict — because Python 3.14 deprecates V1 Config classes, maintaining zero runtime warnings across all test runs — cost: requires `pydantic-settings` dependency.
+
+D28: Multi-worker concurrency benchmarking in `scripts/load_test.py` — because measuring reservation lock contention, dial cycles, and event ingestion latencies locally provides immediate P50/P95 bottleneck insights — cost: local process resource utilization during 60s benchmark runs.

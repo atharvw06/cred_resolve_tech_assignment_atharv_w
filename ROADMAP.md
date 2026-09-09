@@ -176,26 +176,26 @@ python scripts/load_test.py --workers 8 --agents 1000 --duration 60
 ```
 
 **DONE criteria:**
-- [ ] Load test runs, produces JSON with `reservation_p50_ms`, `reservation_p95_ms`, `event_apply_p50_ms`, `event_apply_p95_ms`, `dial_cycle_p50_ms`, `dial_cycle_p95_ms`, `ops_per_sec`, `bottleneck_observation`.
-- [ ] `README.md`: one-line summary, `docker-compose up` quickstart, run tests / sim / load test / dashboard commands, link to ARCHITECTURE.md.
-- [ ] `ARCHITECTURE.md`: 4 mermaid diagrams (C4 Context, Container, Component, Sequence for predictive dial) + 3–5 paragraphs of decision narrative.
-- [ ] `ANSWERS.md`: 4 answers — (1) final question ≥200 words, (2) scale 100→1k→10k ≥250 words, (3) 5 failure drills each ~100 words with code locations, (4) least-confident paragraph ~150 words.
-- [ ] `DECISIONS.md` has ≥10 ADR entries covering: Postgres-only, SKIP LOCKED, injected clock, import firewall, EWMA choice, AIMD parameters, circuit breaker thresholds, atomic-attach-or-abandon, etc.
-- [ ] `ASSUMPTIONS.md` documents anything you guessed.
+- [x] Load test runs, produces JSON with `reservation_p50_ms`, `reservation_p95_ms`, `event_apply_p50_ms`, `event_apply_p95_ms`, `dial_cycle_p50_ms`, `dial_cycle_p95_ms`, `ops_per_sec`, `bottleneck_observation`.
+- [x] `README.md`: one-line summary, `docker-compose up` quickstart, run tests / sim / load test / dashboard commands, link to ARCHITECTURE.md.
+- [x] `ARCHITECTURE.md`: 4 mermaid diagrams (C4 Context, Container, Component, Sequence for predictive dial) + 3–5 paragraphs of decision narrative.
+- [x] `ANSWERS.md`: 4 answers — (1) final question ≥200 words, (2) scale 100→1k→10k ≥250 words, (3) 5 failure drills each ~100 words with code locations, (4) least-confident paragraph ~150 words.
+- [x] `DECISIONS.md` has ≥10 ADR entries covering: Postgres-only, SKIP LOCKED, injected clock, import firewall, EWMA choice, AIMD parameters, circuit breaker thresholds, atomic-attach-or-abandon, etc. (28 total ADRs).
+- [x] `ASSUMPTIONS.md` documents anything you guessed.
 
 ---
 
 ## Final pre-submit checklist
 
-- [ ] All M0–M8 boxes above ticked.
-- [ ] `pytest -v` is green.
-- [ ] `lint-imports` passes.
-- [ ] `docker-compose up` works end-to-end from clean clone.
-- [ ] Sim runs deterministically with same seed.
-- [ ] Dashboard live updates work.
-- [ ] Load test produces JSON report.
-- [ ] All 4 docs files exist and are complete.
-- [ ] Final status summary printed.
+- [x] All M0–M8 boxes above ticked.
+- [x] `pytest -v` is green.
+- [x] `lint-imports` passes.
+- [x] `docker-compose up` works end-to-end from clean clone.
+- [x] Sim runs deterministically with same seed.
+- [x] Dashboard live updates work.
+- [x] Load test produces JSON report.
+- [x] All 4 docs files exist and are complete.
+- [x] Final status summary printed.
 
 ---
 
@@ -203,12 +203,12 @@ python scripts/load_test.py --workers 8 --agents 1000 --duration 60
 
 | Date | Phase | Status | Notes |
 |---|---|---|---|
-| _ | M0 | not started | |
-| _ | M1 | not started | |
-| _ | M2 | not started | |
-| _ | M3 | not started | |
-| _ | M4 | not started | |
-| _ | M5 | not started | |
-| _ | M6 | not started | |
-| _ | M7 | not started | |
-| _ | M8 | not started | |
+| 2026-09-10 | M0 | COMPLETED | Scaffold, DB schema, config, healthz |
+| 2026-09-10 | M1 | COMPLETED | Domain FSMs, table-driven, convergence rules |
+| 2026-09-10 | M2 | COMPLETED | SQLAlchemy models, SKIP LOCKED reservation |
+| 2026-09-10 | M3 | COMPLETED | Providers A/B, idempotent event ingest, circuit breaker |
+| 2026-09-10 | M4 | COMPLETED | Progressive worker, lease reaper, crash drill |
+| 2026-09-10 | M5 | COMPLETED | Predictive engine, binomial bound, 10k property test, firewall |
+| 2026-09-10 | M6 | COMPLETED | Simulation harness, scenarios A-D, JSON/CSV reports |
+| 2026-09-10 | M7 | COMPLETED | React TS dashboard, 3 tabs, WebSocket streaming |
+| 2026-09-10 | M8 | COMPLETED | Load test, README, ARCHITECTURE.md, ANSWERS.md |
