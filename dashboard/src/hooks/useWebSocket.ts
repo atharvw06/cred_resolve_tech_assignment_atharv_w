@@ -1,28 +1,17 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { DASHBOARD_TOKEN } from '../api/client';
+import { ClientDialerEngine, DecisionRow } from '../sim/clientSim';
 
 export interface DashboardData {
   agents: Record<string, number>;
   funnel: Record<string, number>;
-  decisions: Array<{
-    id: string;
-    tick_id: number;
-    decided_at: string;
-    A: number;
-    R: number;
-    C: number;
-    p_hat: number;
-    n_proposed: number;
-    n_approved: number;
-    clamp_reasons: string[];
-    mode_used: string;
-  }>;
+  decisions: DecisionRow[];
 }
 
 export function useWebSocket() {
   const [data, setData] = useState<DashboardData>({
     agents: {
-      AVAILABLE: 0,
+      AVAILABLE: 50,
       RESERVED: 0,
       DIALING: 0,
       CONNECTED: 0,
@@ -31,7 +20,8 @@ export function useWebSocket() {
       OFFLINE: 0,
     },
     funnel: {
-      QUEUED: 0,
+      QUEUED: 500,
+      RESERVED: 0,
       INITIATED: 0,
       RINGING: 0,
       ANSWERED: 0,
@@ -42,44 +32,55 @@ export function useWebSocket() {
     },
     decisions: [],
   });
-  const [isConnected, setIsConnected] = useState(false);
-  const wsRef = useRef<WebSocket | null>(null);
 
+  const [isConnected, setIsConnected] = useState(false);
+  const [isSimRunning, setIsSimRunning] = useState(true);
+  const [scenario, setScenario] = useState<'A' | 'B' | 'C' | 'D'>('A');
+  const [mode, setMode] = useState<'PREDICTIVE' | 'PROGRESSIVE'>('PREDICTIVE');
+
+  const wsRef = useRef<WebSocket | null>(null);
+  const engineRef = useRef<ClientDialerEngine>(new ClientDialerEngine());
+
+  // WebSocket live backend connection attempt
   useEffect(() => {
     let reconnectTimeout: ReturnType<typeof setTimeout>;
 
     function connect() {
-      const wsUrl = `ws://localhost:8000/ws/dashboard?token=${DASHBOARD_TOKEN}`;
-      const ws = new WebSocket(wsUrl);
-      wsRef.current = ws;
+      try {
+        const wsUrl = `ws://localhost:8000/ws/dashboard?token=${DASHBOARD_TOKEN}`;
+        const ws = new WebSocket(wsUrl);
+        wsRef.current = ws;
 
-      ws.onopen = () => {
-        setIsConnected(true);
-      };
+        ws.onopen = () => {
+          setIsConnected(true);
+        };
 
-      ws.onmessage = (event) => {
-        try {
-          const payload = JSON.parse(event.data);
-          if (payload.type === 'SNAPSHOT') {
-            setData({
-              agents: payload.agents || {},
-              funnel: payload.funnel || {},
-              decisions: payload.decisions || [],
-            });
+        ws.onmessage = (event) => {
+          try {
+            const payload = JSON.parse(event.data);
+            if (payload.type === 'SNAPSHOT') {
+              setData({
+                agents: payload.agents || {},
+                funnel: payload.funnel || {},
+                decisions: payload.decisions || [],
+              });
+            }
+          } catch (e) {
+            console.error('Error parsing dashboard WS frame:', e);
           }
-        } catch (e) {
-          console.error('Error parsing dashboard WS frame:', e);
-        }
-      };
+        };
 
-      ws.onclose = () => {
+        ws.onclose = () => {
+          setIsConnected(false);
+          reconnectTimeout = setTimeout(connect, 4000);
+        };
+
+        ws.onerror = () => {
+          ws.close();
+        };
+      } catch (e) {
         setIsConnected(false);
-        reconnectTimeout = setTimeout(connect, 2000);
-      };
-
-      ws.onerror = () => {
-        ws.close();
-      };
+      }
     }
 
     connect();
@@ -92,5 +93,59 @@ export function useWebSocket() {
     };
   }, []);
 
-  return { data, isConnected };
+  // Client-side auto simulation loop when WebSocket is not connected or when sim is active
+  useEffect(() => {
+    if (isConnected) return; // Backend is feeding data
+
+    const engine = engineRef.current;
+    engine.scenario = scenario;
+    engine.mode = mode;
+
+    let intervalId: ReturnType<typeof setInterval>;
+    if (isSimRunning) {
+      intervalId = setInterval(() => {
+        const tickRes = engine.tick();
+        setData(tickRes);
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isConnected, isSimRunning, scenario, mode]);
+
+  const toggleSim = useCallback(() => {
+    setIsSimRunning((prev) => !prev);
+  }, []);
+
+  const resetSim = useCallback(() => {
+    engineRef.current.reset(50);
+    setData({
+      agents: { ...engineRef.current.agents },
+      funnel: { ...engineRef.current.funnel },
+      decisions: [],
+    });
+  }, []);
+
+  const changeScenario = useCallback((s: 'A' | 'B' | 'C' | 'D') => {
+    setScenario(s);
+    engineRef.current.scenario = s;
+  }, []);
+
+  const changeMode = useCallback((m: 'PREDICTIVE' | 'PROGRESSIVE') => {
+    setMode(m);
+    engineRef.current.mode = m;
+  }, []);
+
+  return {
+    data,
+    isConnected,
+    isSimRunning,
+    scenario,
+    mode,
+    toggleSim,
+    resetSim,
+    changeScenario,
+    changeMode,
+  };
 }

@@ -4,39 +4,79 @@ A production-grade, progressive and predictive outbound dialer prototype with a 
 
 ---
 
-## 🚀 Quickstart
+## 🚀 Quickstart & Deployment
 
-### Option A: Docker Compose (Recommended for Staging/Production)
+### Option A: Deploy to Vercel (Instant Cloud Preview)
+
+The React Dashboard is fully optimized for Vercel deployment and includes an embedded **Interactive Telemetry Simulation Engine**. If deployed as a standalone frontend on Vercel, the dashboard automatically detects the lack of a local backend daemon and launches an in-browser deterministic simulation replicating CredResolve's telephony pacing, agent state transitions, and safety bounds in real time.
+
+1. **Import Repository to Vercel**:
+   - Go to [vercel.com/new](https://vercel.com/new) and select `atharvw06/CRED_RESOLVE_Tech_Assignment_Atharv_W`.
+2. **Build Settings** (Automatic via `vercel.json`):
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `dashboard` (or leave root `./` since `vercel.json` automatically builds `dashboard`)
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+3. **Deploy**:
+   - Click **Deploy**. In under 60 seconds, your industry-grade mission control dashboard will be live at `https://<your-project>.vercel.app`.
+   - **Live Interactive Controls**: Switch between Scenario A/B/C/D, toggle `PREDICTIVE` / `PROGRESSIVE` modes, pause/resume simulation, filter agent workforce status, and inspect closed-form binomial safety math directly in the browser!
+
+---
+
+### Option B: Local Developer Mode (Full Backend + Live Telemetry)
+
+```bash
+# 1. Clone and install dependencies
+git clone https://github.com/atharvw06/CRED_RESOLVE_Tech_Assignment_Atharv_W.git
+cd CRED_RESOLVE_Tech_Assignment_Atharv_W
+
+# Backend setup (Python 3.11+)
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
+pip install -e .
+
+# Frontend setup (Node 18+)
+cd dashboard
+npm install
+npm run build
+cd ..
+
+# 2. Run full pytest verification suite (31 tests across FSM, Concurrency, Chaos, Property, Firewall)
+python -m pytest -v
+
+# 3. Verify architectural import firewall
+python -c "import importlinter.cli; importlinter.cli.lint_imports()"
+
+# 4. Run deterministic simulation (Scenario A: 50 agents, 10 minutes)
+python -m app.sim.runner --scenario A --seed 42 --duration 600 --agents 50
+
+# 5. Run high-concurrency load test (8 worker threads, 1,000 agents)
+python scripts/load_test.py --workers 8 --agents 1000 --duration 60
+
+# 6. Start the System
+# Terminal 1 (Backend API + WebSocket Telemetry):
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+# Terminal 2 (React Vite Dashboard):
+cd dashboard
+npm run dev
+# Open http://localhost:5173
+```
+
+---
+
+### Option C: Docker Compose (Full Stack Isolated Containerization)
+
 ```bash
 docker compose up --build -d
 ```
-- API & Docs: http://localhost:8000/docs
-- Live Metrics: http://localhost:8000/metrics
-- React Dashboard: http://localhost:5173
-
-### Option B: Local Developer Mode
-```bash
-# 1. Install dependencies
-pip install -e .
-cd dashboard && npm install && npm run build && cd ..
-
-# 2. Run full pytest suite (FSM, Concurrency, Chaos, Property, Firewall)
-python -m pytest -v
-
-# 3. Run import firewall check
-python -c "import importlinter.cli; importlinter.cli.lint_imports()"
-
-# 4. Run deterministic simulation (Scenario A, seed 42)
-python -m app.sim.runner --scenario A --seed 42 --duration 600 --agents 50
-
-# 5. Run concurrency load test (8 workers, 1000 agents)
-python scripts/load_test.py --workers 8 --agents 1000 --duration 60
-
-# 6. Start API server & React Dashboard
-uvicorn app.main:app --host 0.0.0.0 --port 8000
-# In another terminal:
-cd dashboard && npm run dev
-```
+- **React Mission Control Dashboard**: http://localhost:5173
+- **FastAPI Documentation & Swagger UI**: http://localhost:8000/docs
+- **Prometheus Metrics**: http://localhost:8000/metrics
+- **Health Check**: http://localhost:8000/healthz
 
 ---
 
