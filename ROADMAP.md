@@ -37,13 +37,13 @@
 **Files:** `app/domain/fsm.py`, `app/domain/enums.py`, `tests/test_fsm.py`.
 
 **DONE criteria:**
-- [ ] All legal transitions return correct new state.
-- [ ] Illegal transitions return `(current, False)` and never raise.
-- [ ] Duplicate terminal events are no-ops.
-- [ ] `COMPLETED` is accepted from any active state (convergence rule).
-- [ ] Sequence `ANSWERED, ANSWERED, ANSWERED, COMPLETED` → final state `COMPLETED`.
-- [ ] Sequence `COMPLETED, ANSWERED, RINGING` → final state `COMPLETED` (late events dropped).
-- [ ] Pure-Python module — no DB imports.
+- [x] All legal transitions return correct new state.
+- [x] Illegal transitions return `(current, False)` and never raise.
+- [x] Duplicate terminal events are no-ops.
+- [x] `COMPLETED` is accepted from any active state (convergence rule).
+- [x] Sequence `ANSWERED, ANSWERED, ANSWERED, COMPLETED` → final state `COMPLETED`.
+- [x] Sequence `COMPLETED, ANSWERED, RINGING` → final state `COMPLETED` (late events dropped).
+- [x] Pure-Python module — no DB imports.
 
 ---
 
