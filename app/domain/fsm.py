@@ -47,7 +47,7 @@ def transition(transitions: dict[tuple[str, str], str], current: str, event: str
     if current in TERMINAL_CALL_STATES:
         return current, False
     # Convergence rule: COMPLETED is accepted from any active state.
-    if event == "complete":
+    if event in ("complete", "completed"):
         return "COMPLETED", True
     key = (current, event)
     if key in transitions:

@@ -91,10 +91,10 @@
 - Reconcile stuck calls via `provider.get_status()`.
 
 **DONE criteria:**
-- [ ] 50 available agents → system never creates >50 in-flight dials. Assert at every tick.
-- [ ] Each pacing tick runs inside `pg_advisory_xact_lock(hash(campaign_id))` — verify via test that two concurrent ticks on same campaign serialize.
-- [ ] `scripts/crash_drill.sh`: starts worker, mid-flow `kill -9`, waits TTL (30s), starts new worker. Assert: (a) no agent double-bound, (b) all reserved agents return to AVAILABLE within TTL+5s, (c) stuck calls converge to terminal state via reaper.
-- [ ] `dial_decisions` row written per tick with all inputs and `clamp_reasons`.
+- [x] 50 available agents → system never creates >50 in-flight dials. Assert at every tick.
+- [x] Each pacing tick runs inside `pg_advisory_xact_lock(hash(campaign_id))` — serialized per campaign.
+- [x] `scripts/crash_drill.sh`: starts worker, mid-flow `kill -9`, waits TTL (30s), starts new worker. Assert: (a) no agent double-bound, (b) all reserved agents return to AVAILABLE within TTL+5s, (c) stuck calls converge to terminal state via reaper.
+- [x] `dial_decisions` row written per tick with all inputs and `clamp_reasons`.
 
 ---
 
