@@ -157,11 +157,11 @@ python -m app.sim.runner --scenario A --seed 42 --duration 600 --agents 50
 **Constraints:** No UI libraries beyond `recharts`. TailwindCSS or plain CSS is fine.
 
 **DONE criteria:**
-- [ ] Dashboard loads at `http://localhost:5173`.
-- [ ] WebSocket connects, live updates appear when sim is running.
-- [ ] All 3 tabs functional.
-- [ ] Pacing panel shows clamp reasons as visible badges.
-- [ ] Bearer token auth enforced on WebSocket.
+- [x] Dashboard loads at `http://localhost:5173`.
+- [x] WebSocket connects, live updates appear when sim is running.
+- [x] All 3 tabs functional.
+- [x] Pacing panel shows clamp reasons as visible badges.
+- [x] Bearer token auth enforced on WebSocket.
 
 ---
 
