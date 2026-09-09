@@ -103,13 +103,13 @@
 **Files:** `app/pacing/predictive.py`, `app/safety/controller.py`, `tests/test_safety_property.py`, `tests/test_predictive.py`, `tests/test_import_firewall.py`, `.importlinter`.
 
 **DONE criteria:**
-- [ ] Property test (`hypothesis`, 10k examples): for every random valid state (A, R, C, p_hat, sigma, alpha, d_hat, h_hat), the approved `n` NEVER violates `u*(R+n) + z*sqrt((R+n)*u*(1-u)) <= A + F + 1e-6` where `u = clamp(p_hat + 2*sigma_hat, 0.05, 0.98)`, `z = 2.33`, `F = C*min(1, d_hat/h_hat)`.
-- [ ] Import firewall: `pytest tests/test_import_firewall.py` passes.
-- [ ] `lint-imports` (import-linter package) passes with contract: `app.pacing.* must not import app.providers.*`.
-- [ ] AIMD: ABANDONED event → `alpha = max(0.2, alpha / 2)`. Clean interval → `alpha = min(1.0, alpha + 0.05)`.
-- [ ] Hard caps: provider circuit OPEN → `n_approved=0`. Metrics stale → force progressive (`n_approved <= A`). Window abandonment > 3% → 60s progressive cooldown.
-- [ ] `dial_decisions` has all inputs, `n_proposed`, `n_approved`, `clamp_reasons`, `mode_used`.
-- [ ] Atomic-attach-or-abandon: predictive ANSWERED with available agent → atomic `UPDATE agents SET status='CONNECTED' WHERE id=(... SKIP LOCKED ...) AND status='AVAILABLE' RETURNING *`. Empty result → 3s grace → `ABANDONED`.
+- [x] Property test (`hypothesis`, 10k examples): for every random valid state (A, R, C, p_hat, sigma, alpha, d_hat, h_hat), the approved `n` NEVER violates `u*(R+n) + z*sqrt((R+n)*u*(1-u)) <= A + F + 1e-6` where `u = clamp(p_hat + 2*sigma_hat, 0.05, 0.98)`, `z = 2.33`, `F = C*min(1, d_hat/h_hat)`.
+- [x] Import firewall: `pytest tests/test_import_firewall.py` passes.
+- [x] `lint-imports` (import-linter package) passes with contract: `app.pacing.* must not import app.providers.*`.
+- [x] AIMD: ABANDONED event → `alpha = max(0.2, alpha / 2)`. Clean interval → `alpha = min(1.0, alpha + 0.05)`.
+- [x] Hard caps: provider circuit OPEN → `n_approved=0`. Metrics stale → force progressive (`n_approved <= A`). Window abandonment > 3% → 60s progressive cooldown.
+- [x] `dial_decisions` has all inputs, `n_proposed`, `n_approved`, `clamp_reasons`, `mode_used`.
+- [x] Atomic-attach-or-abandon: predictive ANSWERED with available agent → atomic `UPDATE agents SET status='CONNECTED' WHERE id=(... SKIP LOCKED ...) AND status='AVAILABLE' RETURNING *`. Empty result → 3s grace → `ABANDONED`.
 
 ---
 

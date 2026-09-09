@@ -77,7 +77,11 @@ class SafetyController:
             n_approved = min(n_approved, A)
             clamp_reasons.append("abandonment_cooldown_3pct")
 
-        mode_used = "PROGRESSIVE" if any("progressive" in r.lower() for r in clamp_reasons) else "PREDICTIVE"
+        mode_used = (
+            "PROGRESSIVE"
+            if any("progressive" in r.lower() or "cooldown" in r.lower() for r in clamp_reasons)
+            else "PREDICTIVE"
+        )
 
         return Approval(
             n_approved=n_approved,
