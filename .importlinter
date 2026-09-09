@@ -1,0 +1,8 @@
+[importlinter]
+root_package = app
+
+[importlinter:contract:pacing-firewall]
+name = Pacing must not import providers
+type = forbidden
+source_modules = app.pacing
+forbidden_modules = app.providers

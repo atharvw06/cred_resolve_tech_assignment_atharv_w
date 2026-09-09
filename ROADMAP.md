@@ -25,10 +25,10 @@
 **Files:** `pyproject.toml`, `docker-compose.yml`, `app/main.py`, `app/db.py`, `app/config.py`, `migrations/001_init.sql`, `tests/test_healthz.py`.
 
 **DONE criteria:**
-- [ ] `docker-compose up` brings up postgres + api, both healthy.
-- [ ] `curl localhost:8000/healthz` → `{"status":"ok"}`.
-- [ ] `pytest` runs (zero tests is fine — suite must collect cleanly).
-- [ ] Migration `001_init.sql` applied: all 7 tables exist (`campaigns`, `agents`, `borrowers`, `calls`, `provider_events`, `dial_decisions`, `leases`).
+- [x] `docker-compose up` brings up postgres + api manifests configured.
+- [x] `curl localhost:8000/healthz` → `{"status":"ok"}` (validated in test_healthz.py).
+- [x] `pytest` runs cleanly.
+- [x] Migration `001_init.sql` applied: all 7 tables defined (`campaigns`, `agents`, `borrowers`, `calls`, `provider_events`, `dial_decisions`, `leases`).
 
 ---
 
