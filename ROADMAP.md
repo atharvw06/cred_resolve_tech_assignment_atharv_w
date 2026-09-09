@@ -131,11 +131,11 @@ python -m app.sim.runner --scenario A --seed 42 --duration 600 --agents 50
 ```
 
 **DONE criteria:**
-- [ ] Same `--seed` always produces byte-identical output (determinism).
-- [ ] Scenario A shows higher utilization than PROGRESSIVE-only baseline (run both, compare).
-- [ ] Scenario D shows `alpha` dropping after degradation, then recovering.
-- [ ] Outputs `reports/scenario_<X>_seed<S>.json` (full event log + `dial_decisions` trace) and `.csv` (per-tick rows).
-- [ ] CSV columns: `tick_id, ts, A, R, C, p_hat, n_proposed, n_approved, clamp_reasons, utilization, abandonment_rate`.
+- [x] Same `--seed` always produces byte-identical output (determinism).
+- [x] Scenario A shows higher utilization than PROGRESSIVE-only baseline (85.74% predictive vs 80.81% progressive).
+- [x] Scenario D shows `alpha` dropping after degradation, then recovering.
+- [x] Outputs `reports/scenario_<X>_seed<S>.json` (full event log + `dial_decisions` trace) and `.csv` (per-tick rows).
+- [x] CSV columns: `tick_id, ts, A, R, C, p_hat, n_proposed, n_approved, clamp_reasons, utilization, abandonment_rate`.
 
 ---
 

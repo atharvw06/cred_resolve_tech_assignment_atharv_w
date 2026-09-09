@@ -1,0 +1,1638 @@
+{
+  "scenario": "D",
+  "mode": "PREDICTIVE",
+  "seed": 42,
+  "duration_seconds": 600,
+  "num_agents": 50,
+  "total_calls_initiated": 1497,
+  "total_calls_answered": 288,
+  "total_calls_connected": 274,
+  "total_calls_completed": 238,
+  "total_calls_abandoned": 14,
+  "total_calls_failed": 1170,
+  "average_utilization": 0.7942,
+  "final_abandonment_rate": 0.04,
+  "final_p_hat": 0.0002,
+  "final_alpha": 0.5,
+  "clamp_reasons_histogram": {
+    "binomial_safety_bound": 522,
+    "abandonment_cooldown_3pct": 409,
+    "circuit_open": 30
+  },
+  "decisions_trace": [
+    {
+      "tick_id": 1,
+      "ts": 0.0,
+      "A": 50,
+      "R": 0,
+      "C": 0,
+      "p_hat": 0.3,
+      "n_proposed": 83,
+      "n_approved": 79,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.0,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 2,
+      "ts": 1.0,
+      "A": 50,
+      "R": 79,
+      "C": 0,
+      "p_hat": 0.3,
+      "n_proposed": 83,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.0,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 3,
+      "ts": 2.0,
+      "A": 50,
+      "R": 79,
+      "C": 0,
+      "p_hat": 0.3,
+      "n_proposed": 83,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.0,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 4,
+      "ts": 3.0,
+      "A": 50,
+      "R": 79,
+      "C": 0,
+      "p_hat": 0.3,
+      "n_proposed": 83,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.0,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 5,
+      "ts": 4.0,
+      "A": 50,
+      "R": 79,
+      "C": 0,
+      "p_hat": 0.3,
+      "n_proposed": 83,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.0,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 6,
+      "ts": 5.0,
+      "A": 50,
+      "R": 78,
+      "C": 0,
+      "p_hat": 0.21,
+      "n_proposed": 119,
+      "n_approved": 16,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.0,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 7,
+      "ts": 6.0,
+      "A": 48,
+      "R": 86,
+      "C": 2,
+      "p_hat": 0.3368,
+      "n_proposed": 71,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.04,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 8,
+      "ts": 7.0,
+      "A": 43,
+      "R": 73,
+      "C": 7,
+      "p_hat": 0.3029,
+      "n_proposed": 71,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.14,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 9,
+      "ts": 8.0,
+      "A": 40,
+      "R": 50,
+      "C": 10,
+      "p_hat": 0.0597,
+      "n_proposed": 340,
+      "n_approved": 64,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.2,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 10,
+      "ts": 9.0,
+      "A": 35,
+      "R": 96,
+      "C": 15,
+      "p_hat": 0.2424,
+      "n_proposed": 74,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.3,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 11,
+      "ts": 10.0,
+      "A": 34,
+      "R": 85,
+      "C": 16,
+      "p_hat": 0.3048,
+      "n_proposed": 57,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.32,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 12,
+      "ts": 11.0,
+      "A": 33,
+      "R": 79,
+      "C": 17,
+      "p_hat": 0.2459,
+      "n_proposed": 68,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.34,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 13,
+      "ts": 12.0,
+      "A": 31,
+      "R": 76,
+      "C": 19,
+      "p_hat": 0.5313,
+      "n_proposed": 30,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.38,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 14,
+      "ts": 13.0,
+      "A": 30,
+      "R": 72,
+      "C": 20,
+      "p_hat": 0.3376,
+      "n_proposed": 46,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.4,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 15,
+      "ts": 14.0,
+      "A": 30,
+      "R": 59,
+      "C": 20,
+      "p_hat": 0.0033,
+      "n_proposed": 311,
+      "n_approved": 46,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.4,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 16,
+      "ts": 15.0,
+      "A": 27,
+      "R": 92,
+      "C": 23,
+      "p_hat": 0.2232,
+      "n_proposed": 63,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.46,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 17,
+      "ts": 16.0,
+      "A": 24,
+      "R": 71,
+      "C": 26,
+      "p_hat": 0.163,
+      "n_proposed": 78,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.52,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 18,
+      "ts": 17.0,
+      "A": 22,
+      "R": 60,
+      "C": 27,
+      "p_hat": 0.2379,
+      "n_proposed": 49,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.54,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 19,
+      "ts": 18.0,
+      "A": 21,
+      "R": 45,
+      "C": 28,
+      "p_hat": 0.0364,
+      "n_proposed": 229,
+      "n_approved": 18,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.56,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 20,
+      "ts": 19.0,
+      "A": 20,
+      "R": 60,
+      "C": 28,
+      "p_hat": 0.2225,
+      "n_proposed": 49,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.56,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 21,
+      "ts": 20.0,
+      "A": 19,
+      "R": 51,
+      "C": 29,
+      "p_hat": 0.1119,
+      "n_proposed": 93,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.58,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 22,
+      "ts": 21.0,
+      "A": 19,
+      "R": 37,
+      "C": 29,
+      "p_hat": 0.0008,
+      "n_proposed": 209,
+      "n_approved": 29,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.58,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 23,
+      "ts": 22.0,
+      "A": 17,
+      "R": 56,
+      "C": 32,
+      "p_hat": 0.5221,
+      "n_proposed": 18,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.64,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 24,
+      "ts": 23.0,
+      "A": 15,
+      "R": 52,
+      "C": 34,
+      "p_hat": 0.5724,
+      "n_proposed": 15,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 25,
+      "ts": 24.0,
+      "A": 15,
+      "R": 45,
+      "C": 34,
+      "p_hat": 0.15,
+      "n_proposed": 58,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 26,
+      "ts": 25.0,
+      "A": 14,
+      "R": 41,
+      "C": 35,
+      "p_hat": 0.336,
+      "n_proposed": 24,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.7,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 27,
+      "ts": 26.0,
+      "A": 13,
+      "R": 37,
+      "C": 34,
+      "p_hat": 0.2907,
+      "n_proposed": 26,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 28,
+      "ts": 27.0,
+      "A": 12,
+      "R": 31,
+      "C": 34,
+      "p_hat": 0.1812,
+      "n_proposed": 39,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 29,
+      "ts": 28.0,
+      "A": 12,
+      "R": 26,
+      "C": 32,
+      "p_hat": 0.0305,
+      "n_proposed": 141,
+      "n_approved": 9,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.64,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 30,
+      "ts": 29.0,
+      "A": 12,
+      "R": 23,
+      "C": 33,
+      "p_hat": 0.0725,
+      "n_proposed": 98,
+      "n_approved": 7,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.66,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 31,
+      "ts": 30.0,
+      "A": 8,
+      "R": 21,
+      "C": 37,
+      "p_hat": 0.7103,
+      "n_proposed": 8,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.74,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 32,
+      "ts": 31.0,
+      "A": 10,
+      "R": 18,
+      "C": 37,
+      "p_hat": 0.2436,
+      "n_proposed": 28,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.74,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 33,
+      "ts": 32.0,
+      "A": 11,
+      "R": 16,
+      "C": 37,
+      "p_hat": 0.1194,
+      "n_proposed": 62,
+      "n_approved": 9,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.74,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 34,
+      "ts": 33.0,
+      "A": 13,
+      "R": 24,
+      "C": 36,
+      "p_hat": 0.0836,
+      "n_proposed": 101,
+      "n_approved": 9,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.72,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 35,
+      "ts": 34.0,
+      "A": 13,
+      "R": 32,
+      "C": 34,
+      "p_hat": 0.0585,
+      "n_proposed": 144,
+      "n_approved": 3,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 36,
+      "ts": 35.0,
+      "A": 13,
+      "R": 33,
+      "C": 34,
+      "p_hat": 0.0287,
+      "n_proposed": 168,
+      "n_approved": 7,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 37,
+      "ts": 36.0,
+      "A": 13,
+      "R": 38,
+      "C": 33,
+      "p_hat": 0.014,
+      "n_proposed": 168,
+      "n_approved": 4,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.66,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 38,
+      "ts": 37.0,
+      "A": 12,
+      "R": 39,
+      "C": 33,
+      "p_hat": 0.1518,
+      "n_proposed": 51,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.66,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 39,
+      "ts": 38.0,
+      "A": 13,
+      "R": 38,
+      "C": 33,
+      "p_hat": 0.1063,
+      "n_proposed": 79,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.66,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 40,
+      "ts": 39.0,
+      "A": 14,
+      "R": 31,
+      "C": 34,
+      "p_hat": 0.0592,
+      "n_proposed": 154,
+      "n_approved": 8,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 41,
+      "ts": 40.0,
+      "A": 14,
+      "R": 34,
+      "C": 34,
+      "p_hat": 0.0099,
+      "n_proposed": 182,
+      "n_approved": 13,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 42,
+      "ts": 41.0,
+      "A": 14,
+      "R": 40,
+      "C": 35,
+      "p_hat": 0.1037,
+      "n_proposed": 88,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.7,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 43,
+      "ts": 42.0,
+      "A": 13,
+      "R": 35,
+      "C": 37,
+      "p_hat": 0.2365,
+      "n_proposed": 36,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.74,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 44,
+      "ts": 43.0,
+      "A": 12,
+      "R": 33,
+      "C": 37,
+      "p_hat": 0.4159,
+      "n_proposed": 19,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.74,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 45,
+      "ts": 44.0,
+      "A": 10,
+      "R": 26,
+      "C": 39,
+      "p_hat": 0.3912,
+      "n_proposed": 17,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.78,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 46,
+      "ts": 45.0,
+      "A": 9,
+      "R": 22,
+      "C": 40,
+      "p_hat": 0.2409,
+      "n_proposed": 27,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 47,
+      "ts": 46.0,
+      "A": 9,
+      "R": 20,
+      "C": 40,
+      "p_hat": 0.1181,
+      "n_proposed": 55,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 48,
+      "ts": 47.0,
+      "A": 8,
+      "R": 19,
+      "C": 41,
+      "p_hat": 0.3578,
+      "n_proposed": 16,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.82,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 49,
+      "ts": 48.0,
+      "A": 9,
+      "R": 15,
+      "C": 41,
+      "p_hat": 0.0859,
+      "n_proposed": 75,
+      "n_approved": 8,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.82,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 50,
+      "ts": 49.0,
+      "A": 7,
+      "R": 18,
+      "C": 41,
+      "p_hat": 0.3865,
+      "n_proposed": 14,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.82,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 51,
+      "ts": 50.0,
+      "A": 4,
+      "R": 11,
+      "C": 44,
+      "p_hat": 0.2421,
+      "n_proposed": 16,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.88,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 61,
+      "ts": 60.0,
+      "A": 8,
+      "R": 16,
+      "C": 39,
+      "p_hat": 0.0889,
+      "n_proposed": 74,
+      "n_approved": 5,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.78,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 71,
+      "ts": 70.0,
+      "A": 10,
+      "R": 23,
+      "C": 37,
+      "p_hat": 0.1061,
+      "n_proposed": 71,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.74,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 81,
+      "ts": 80.0,
+      "A": 9,
+      "R": 32,
+      "C": 38,
+      "p_hat": 0.1538,
+      "n_proposed": 46,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.76,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 91,
+      "ts": 90.0,
+      "A": 10,
+      "R": 17,
+      "C": 40,
+      "p_hat": 0.0637,
+      "n_proposed": 133,
+      "n_approved": 11,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 101,
+      "ts": 100.0,
+      "A": 11,
+      "R": 29,
+      "C": 36,
+      "p_hat": 0.0247,
+      "n_proposed": 177,
+      "n_approved": 6,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.72,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 111,
+      "ts": 110.0,
+      "A": 5,
+      "R": 9,
+      "C": 40,
+      "p_hat": 0.3269,
+      "n_proposed": 16,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 121,
+      "ts": 120.0,
+      "A": 14,
+      "R": 21,
+      "C": 33,
+      "p_hat": 0.2832,
+      "n_proposed": 41,
+      "n_approved": 2,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.66,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 131,
+      "ts": 130.0,
+      "A": 15,
+      "R": 47,
+      "C": 31,
+      "p_hat": 0.0019,
+      "n_proposed": 244,
+      "n_approved": 5,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.62,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 141,
+      "ts": 140.0,
+      "A": 10,
+      "R": 25,
+      "C": 39,
+      "p_hat": 0.2614,
+      "n_proposed": 34,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.78,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 151,
+      "ts": 150.0,
+      "A": 11,
+      "R": 30,
+      "C": 34,
+      "p_hat": 0.0507,
+      "n_proposed": 199,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.68,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 161,
+      "ts": 160.0,
+      "A": 12,
+      "R": 32,
+      "C": 38,
+      "p_hat": 0.0656,
+      "n_proposed": 174,
+      "n_approved": 2,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.76,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 171,
+      "ts": 170.0,
+      "A": 8,
+      "R": 19,
+      "C": 40,
+      "p_hat": 0.5995,
+      "n_proposed": 13,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 181,
+      "ts": 180.0,
+      "A": 9,
+      "R": 21,
+      "C": 41,
+      "p_hat": 0.1728,
+      "n_proposed": 54,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.82,
+      "abandonment_rate": 0.0
+    },
+    {
+      "tick_id": 191,
+      "ts": 190.0,
+      "A": 0,
+      "R": 16,
+      "C": 47,
+      "p_hat": 0.7433,
+      "n_proposed": 1,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound"
+      ],
+      "utilization": 0.94,
+      "abandonment_rate": 0.01
+    },
+    {
+      "tick_id": 201,
+      "ts": 200.0,
+      "A": 3,
+      "R": 4,
+      "C": 44,
+      "p_hat": 0.6169,
+      "n_proposed": 2,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.88,
+      "abandonment_rate": 0.09
+    },
+    {
+      "tick_id": 211,
+      "ts": 210.0,
+      "A": 6,
+      "R": 7,
+      "C": 41,
+      "p_hat": 0.6356,
+      "n_proposed": 2,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.82,
+      "abandonment_rate": 0.09
+    },
+    {
+      "tick_id": 221,
+      "ts": 220.0,
+      "A": 4,
+      "R": 6,
+      "C": 44,
+      "p_hat": 0.979,
+      "n_proposed": 1,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.88,
+      "abandonment_rate": 0.09
+    },
+    {
+      "tick_id": 231,
+      "ts": 230.0,
+      "A": 2,
+      "R": 4,
+      "C": 47,
+      "p_hat": 0.9983,
+      "n_proposed": 1,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.94,
+      "abandonment_rate": 0.09
+    },
+    {
+      "tick_id": 241,
+      "ts": 240.0,
+      "A": 3,
+      "R": 4,
+      "C": 45,
+      "p_hat": 0.8526,
+      "n_proposed": 1,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.9,
+      "abandonment_rate": 0.09
+    },
+    {
+      "tick_id": 251,
+      "ts": 250.0,
+      "A": 3,
+      "R": 4,
+      "C": 44,
+      "p_hat": 0.7652,
+      "n_proposed": 2,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.88,
+      "abandonment_rate": 0.09
+    },
+    {
+      "tick_id": 261,
+      "ts": 260.0,
+      "A": 5,
+      "R": 5,
+      "C": 44,
+      "p_hat": 0.622,
+      "n_proposed": 3,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.88,
+      "abandonment_rate": 0.09
+    },
+    {
+      "tick_id": 271,
+      "ts": 270.0,
+      "A": 0,
+      "R": 1,
+      "C": 49,
+      "p_hat": 0.8646,
+      "n_proposed": 0,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.98,
+      "abandonment_rate": 0.09
+    },
+    {
+      "tick_id": 281,
+      "ts": 280.0,
+      "A": 3,
+      "R": 4,
+      "C": 44,
+      "p_hat": 0.9052,
+      "n_proposed": 1,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.88,
+      "abandonment_rate": 0.1
+    },
+    {
+      "tick_id": 291,
+      "ts": 290.0,
+      "A": 6,
+      "R": 7,
+      "C": 40,
+      "p_hat": 0.7342,
+      "n_proposed": 2,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.1
+    },
+    {
+      "tick_id": 301,
+      "ts": 300.0,
+      "A": 4,
+      "R": 5,
+      "C": 45,
+      "p_hat": 0.6781,
+      "n_proposed": 1,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.9,
+      "abandonment_rate": 0.1
+    },
+    {
+      "tick_id": 311,
+      "ts": 310.0,
+      "A": 2,
+      "R": 3,
+      "C": 47,
+      "p_hat": 0.6516,
+      "n_proposed": 1,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.94,
+      "abandonment_rate": 0.1
+    },
+    {
+      "tick_id": 321,
+      "ts": 320.0,
+      "A": 2,
+      "R": 0,
+      "C": 45,
+      "p_hat": 0.9163,
+      "n_proposed": 0,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.9,
+      "abandonment_rate": 0.11
+    },
+    {
+      "tick_id": 331,
+      "ts": 330.0,
+      "A": 7,
+      "R": 8,
+      "C": 42,
+      "p_hat": 0.6143,
+      "n_proposed": 3,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.84,
+      "abandonment_rate": 0.11
+    },
+    {
+      "tick_id": 341,
+      "ts": 340.0,
+      "A": 3,
+      "R": 4,
+      "C": 45,
+      "p_hat": 0.9244,
+      "n_proposed": 1,
+      "n_approved": 1,
+      "clamp_reasons": [
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.9,
+      "abandonment_rate": 0.11
+    },
+    {
+      "tick_id": 351,
+      "ts": 350.0,
+      "A": 8,
+      "R": 9,
+      "C": 40,
+      "p_hat": 0.1808,
+      "n_proposed": 11,
+      "n_approved": 7,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.11
+    },
+    {
+      "tick_id": 361,
+      "ts": 360.0,
+      "A": 1,
+      "R": 4,
+      "C": 48,
+      "p_hat": 0.4481,
+      "n_proposed": 2,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.96,
+      "abandonment_rate": 0.11
+    },
+    {
+      "tick_id": 371,
+      "ts": 370.0,
+      "A": 2,
+      "R": 5,
+      "C": 47,
+      "p_hat": 0.8675,
+      "n_proposed": 1,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.94,
+      "abandonment_rate": 0.14
+    },
+    {
+      "tick_id": 381,
+      "ts": 380.0,
+      "A": 5,
+      "R": 10,
+      "C": 41,
+      "p_hat": 0.1458,
+      "n_proposed": 11,
+      "n_approved": 2,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.82,
+      "abandonment_rate": 0.14
+    },
+    {
+      "tick_id": 391,
+      "ts": 390.0,
+      "A": 6,
+      "R": 17,
+      "C": 42,
+      "p_hat": 0.1103,
+      "n_proposed": 16,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.84,
+      "abandonment_rate": 0.14
+    },
+    {
+      "tick_id": 401,
+      "ts": 400.0,
+      "A": 6,
+      "R": 23,
+      "C": 42,
+      "p_hat": 0.5222,
+      "n_proposed": 3,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.84,
+      "abandonment_rate": 0.14
+    },
+    {
+      "tick_id": 411,
+      "ts": 410.0,
+      "A": 11,
+      "R": 39,
+      "C": 38,
+      "p_hat": 0.0001,
+      "n_proposed": 54,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.76,
+      "abandonment_rate": 0.14
+    },
+    {
+      "tick_id": 421,
+      "ts": 420.0,
+      "A": 11,
+      "R": 40,
+      "C": 36,
+      "p_hat": 0.3,
+      "n_proposed": 11,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.72,
+      "abandonment_rate": 0.14
+    },
+    {
+      "tick_id": 431,
+      "ts": 430.0,
+      "A": 9,
+      "R": 23,
+      "C": 40,
+      "p_hat": 0.1644,
+      "n_proposed": 18,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.08
+    },
+    {
+      "tick_id": 441,
+      "ts": 440.0,
+      "A": 9,
+      "R": 27,
+      "C": 38,
+      "p_hat": 0.0263,
+      "n_proposed": 56,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.76,
+      "abandonment_rate": 0.07
+    },
+    {
+      "tick_id": 451,
+      "ts": 450.0,
+      "A": 14,
+      "R": 39,
+      "C": 33,
+      "p_hat": 0.0353,
+      "n_proposed": 96,
+      "n_approved": 2,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.66,
+      "abandonment_rate": 0.06
+    },
+    {
+      "tick_id": 461,
+      "ts": 460.0,
+      "A": 16,
+      "R": 47,
+      "C": 33,
+      "p_hat": 0.0001,
+      "n_proposed": 108,
+      "n_approved": 8,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.66,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 471,
+      "ts": 470.0,
+      "A": 13,
+      "R": 28,
+      "C": 37,
+      "p_hat": 0.0269,
+      "n_proposed": 93,
+      "n_approved": 13,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.74,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 481,
+      "ts": 480.0,
+      "A": 7,
+      "R": 22,
+      "C": 43,
+      "p_hat": 0.2879,
+      "n_proposed": 12,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "circuit_open",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.86,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 491,
+      "ts": 490.0,
+      "A": 8,
+      "R": 1,
+      "C": 39,
+      "p_hat": 0.0029,
+      "n_proposed": 75,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "circuit_open",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.78,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 501,
+      "ts": 500.0,
+      "A": 12,
+      "R": 42,
+      "C": 38,
+      "p_hat": 0.002,
+      "n_proposed": 103,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.76,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 511,
+      "ts": 510.0,
+      "A": 8,
+      "R": 25,
+      "C": 42,
+      "p_hat": 0.0045,
+      "n_proposed": 88,
+      "n_approved": 4,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.84,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 521,
+      "ts": 520.0,
+      "A": 6,
+      "R": 17,
+      "C": 43,
+      "p_hat": 0.0022,
+      "n_proposed": 70,
+      "n_approved": 4,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.86,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 531,
+      "ts": 530.0,
+      "A": 3,
+      "R": 9,
+      "C": 45,
+      "p_hat": 0.2311,
+      "n_proposed": 10,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.9,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 541,
+      "ts": 540.0,
+      "A": 4,
+      "R": 15,
+      "C": 45,
+      "p_hat": 0.0186,
+      "n_proposed": 64,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "circuit_open",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.9,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 551,
+      "ts": 550.0,
+      "A": 5,
+      "R": 0,
+      "C": 43,
+      "p_hat": 0.0001,
+      "n_proposed": 72,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "circuit_open",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.86,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 561,
+      "ts": 560.0,
+      "A": 7,
+      "R": 25,
+      "C": 39,
+      "p_hat": 0.0001,
+      "n_proposed": 88,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.78,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 571,
+      "ts": 570.0,
+      "A": 9,
+      "R": 32,
+      "C": 40,
+      "p_hat": 0.1471,
+      "n_proposed": 40,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.8,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 581,
+      "ts": 580.0,
+      "A": 6,
+      "R": 17,
+      "C": 42,
+      "p_hat": 0.1739,
+      "n_proposed": 26,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.84,
+      "abandonment_rate": 0.05
+    },
+    {
+      "tick_id": 591,
+      "ts": 590.0,
+      "A": 9,
+      "R": 32,
+      "C": 38,
+      "p_hat": 0.001,
+      "n_proposed": 117,
+      "n_approved": 0,
+      "clamp_reasons": [
+        "binomial_safety_bound",
+        "abandonment_cooldown_3pct"
+      ],
+      "utilization": 0.76,
+      "abandonment_rate": 0.04
+    }
+  ]
+}
