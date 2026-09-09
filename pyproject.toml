@@ -22,6 +22,9 @@ dependencies = [
 asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = "test_*.py"
+filterwarnings = [
+    "ignore::DeprecationWarning:aiosqlite.*",
+]
 
 [tool.importlinter]
 root_package = "app"

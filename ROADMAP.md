@@ -52,11 +52,11 @@
 **Files:** `app/domain/models.py`, `app/providers/call_allocator.py` (only `reserve_agent` function for now), `tests/test_reservation_concurrency.py`.
 
 **DONE criteria (the critical concurrency test):**
-- [ ] Spawn N=10 asyncio tasks racing on a pool of N=10 AVAILABLE agents → exactly 10 succeed, 0 collisions.
-- [ ] Same test with N=50 tasks on N=10 agents → exactly 10 succeed, 40 get `None`.
-- [ ] No agent is double-reserved. Assert: `SELECT count(*) FROM agents WHERE status='RESERVED'` equals pool size.
-- [ ] The reservation uses the literal SQL from invariant #4 (single `UPDATE ... WHERE id = (SELECT ... FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`).
-- [ ] Round-robin fairness: `ORDER BY last_call_ended_at NULLS FIRST` ensures agents who haven't been called longest get picked first.
+- [x] Spawn N=10 asyncio tasks racing on a pool of N=10 AVAILABLE agents → exactly 10 succeed, 0 collisions.
+- [x] Same test with N=50 tasks on N=10 agents → exactly 10 succeed, 40 get `None`.
+- [x] No agent is double-reserved. Assert: `SELECT count(*) FROM agents WHERE status='RESERVED'` equals pool size.
+- [x] The reservation uses the literal SQL from invariant #4 (single `UPDATE ... WHERE id = (SELECT ... FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`).
+- [x] Round-robin fairness: `ORDER BY last_call_ended_at NULLS FIRST` ensures agents who haven't been called longest get picked first.
 
 ---
 
