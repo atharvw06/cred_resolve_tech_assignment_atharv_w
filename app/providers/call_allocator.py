@@ -11,7 +11,9 @@ SET status='RESERVED', reserved_by=:worker_id, reserved_until=now() + (:ttl_seco
 WHERE id = (
   SELECT id FROM agents
   WHERE status='AVAILABLE'
-  ORDER BY last_call_ended_at NULLS FIRST
+    AND (last_heartbeat_at IS NULL OR last_heartbeat_at >= now() - interval '60 seconds')
+    AND (reserved_until IS NULL OR reserved_until < now())
+  ORDER BY last_call_ended_at NULLS FIRST, id ASC
   FOR UPDATE SKIP LOCKED LIMIT 1
 ) RETURNING id, campaign_id, name, status, reserved_by, reserved_until, last_call_ended_at, last_heartbeat_at, updated_at;
 """
@@ -20,9 +22,58 @@ SQLITE_FIND_AVAILABLE_SQL = """
 SELECT id, campaign_id, name, status, reserved_by, reserved_until, last_call_ended_at, last_heartbeat_at, updated_at
 FROM agents
 WHERE status='AVAILABLE'
-ORDER BY CASE WHEN last_call_ended_at IS NULL THEN 0 ELSE 1 END, last_call_ended_at ASC
+  AND (reserved_until IS NULL OR reserved_until < :now_dt)
+ORDER BY CASE WHEN last_call_ended_at IS NULL THEN 0 ELSE 1 END, last_call_ended_at ASC, id ASC
 LIMIT 1;
 """
+
+POSTGRES_RESERVE_BORROWER_SQL = """
+UPDATE borrowers
+SET call_count = call_count + 1,
+    last_called_at = now(),
+    reserved_by = :worker_id,
+    reserved_until = now() + (:ttl_seconds || ' seconds')::interval,
+    updated_at = now()
+WHERE id = (
+  SELECT b.id FROM borrowers b
+  WHERE b.campaign_id = :campaign_id
+    AND b.suppressed = false
+    AND b.call_count < b.max_attempts
+    AND (b.retry_after IS NULL OR b.retry_after <= now())
+    AND (b.reserved_until IS NULL OR b.reserved_until < now())
+    AND NOT EXISTS (
+      SELECT 1 FROM calls c
+      WHERE c.borrower_id = b.id
+        AND c.state IN ('QUEUED', 'RESERVED', 'INITIATED', 'RINGING', 'ANSWERED', 'CONNECTED')
+    )
+  ORDER BY b.priority DESC, CASE WHEN b.last_called_at IS NULL THEN 0 ELSE 1 END, b.last_called_at ASC, b.id ASC
+  FOR UPDATE SKIP LOCKED LIMIT 1
+) RETURNING id, campaign_id, phone, priority, call_count, last_called_at;
+"""
+
+SQLITE_FIND_BORROWER_SQL = """
+SELECT b.id, b.phone, b.priority, b.call_count
+FROM borrowers b
+WHERE b.campaign_id = :campaign_id
+  AND b.suppressed = 0
+  AND b.call_count < b.max_attempts
+  AND (b.retry_after IS NULL OR b.retry_after <= :now_dt)
+  AND (b.reserved_until IS NULL OR b.reserved_until < :now_dt)
+  AND NOT EXISTS (
+    SELECT 1 FROM calls c
+    WHERE c.borrower_id = b.id
+      AND c.state IN ('QUEUED', 'RESERVED', 'INITIATED', 'RINGING', 'ANSWERED', 'CONNECTED')
+  )
+ORDER BY b.priority DESC, CASE WHEN b.last_called_at IS NULL THEN 0 ELSE 1 END, b.last_called_at ASC, b.id ASC
+LIMIT 1;
+"""
+
+
+def mask_phone(phone: str) -> str:
+    """Mask PII phone number, displaying only leading dial-code and trailing 4 digits."""
+    if not phone or len(phone) < 7:
+        return "***"
+    return f"{phone[:3]}*****{phone[-4:]}"
 
 
 async def reserve_agent(
@@ -50,14 +101,15 @@ async def reserve_agent(
         return None
     else:
         # SQLite dialect handling for local concurrency testing
-        # When concurrent tasks select the same candidate, the loser of the race
-        # retries on the next available agent until an agent is claimed or none are available.
         now_dt = datetime.now(timezone.utc)
         reserved_until = now_dt + timedelta(seconds=ttl_seconds)
 
         max_attempts = 20
         for _ in range(max_attempts):
-            find_res = await session.execute(text(SQLITE_FIND_AVAILABLE_SQL))
+            find_res = await session.execute(
+                text(SQLITE_FIND_AVAILABLE_SQL),
+                {"now_dt": now_dt},
+            )
             avail_row = find_res.mappings().first()
             if not avail_row:
                 await session.rollback()
@@ -67,7 +119,7 @@ async def reserve_agent(
             update_sql = """
             UPDATE agents
             SET status='RESERVED', reserved_by=:worker_id, reserved_until=:reserved_until, updated_at=:now_dt
-            WHERE id = :agent_id AND status = 'AVAILABLE';
+            WHERE id = :agent_id AND (reserved_until IS NULL OR reserved_until < :now_dt);
             """
             up_res = await session.execute(
                 text(update_sql),
@@ -96,28 +148,79 @@ async def reserve_agent(
 async def reserve_borrower(
     session: AsyncSession,
     campaign_id: str,
+    worker_id: str = "allocator",
+    ttl_seconds: int = 30,
 ) -> dict[str, Any] | None:
-    """Select the highest priority uncalled/least-called borrower."""
-    find_sql = """
-    SELECT id, phone, priority, call_count
-    FROM borrowers
-    WHERE campaign_id = :campaign_id
-    ORDER BY priority DESC, CASE WHEN last_called_at IS NULL THEN 0 ELSE 1 END, last_called_at ASC
-    LIMIT 1;
     """
-    res = await session.execute(text(find_sql), {"campaign_id": campaign_id})
-    row = res.mappings().first()
-    if not row:
-        return None
+    Atomically reserve an eligible borrower using SKIP LOCKED.
+    Enforces campaign scoping, suppression checks, attempt limits,
+    retry timestamps, and active call exclusivity.
+    """
+    bind = session.bind
+    dialect = bind.dialect.name if bind else "postgresql"
 
-    now_dt = datetime.now(timezone.utc)
-    up_sql = """
-    UPDATE borrowers
-    SET call_count = call_count + 1, last_called_at = :now_dt
-    WHERE id = :id;
-    """
-    await session.execute(text(up_sql), {"id": row["id"], "now_dt": now_dt})
-    return dict(row)
+    if dialect == "postgresql":
+        result = await session.execute(
+            text(POSTGRES_RESERVE_BORROWER_SQL),
+            {
+                "campaign_id": campaign_id,
+                "worker_id": worker_id,
+                "ttl_seconds": str(ttl_seconds),
+            },
+        )
+        row = result.mappings().first()
+        if row:
+            await session.commit()
+            return dict(row)
+        await session.commit()
+        return None
+    else:
+        # SQLite dialect handling for local concurrency testing
+        now_dt = datetime.now(timezone.utc)
+        reserved_until = now_dt + timedelta(seconds=ttl_seconds)
+
+        max_attempts = 20
+        for _ in range(max_attempts):
+            res = await session.execute(
+                text(SQLITE_FIND_BORROWER_SQL),
+                {"campaign_id": campaign_id, "now_dt": now_dt},
+            )
+            row = res.mappings().first()
+            if not row:
+                await session.rollback()
+                return None
+
+            b_id = row["id"]
+            up_sql = """
+            UPDATE borrowers
+            SET call_count = call_count + 1,
+                last_called_at = :now_dt,
+                reserved_by = :worker_id,
+                reserved_until = :reserved_until,
+                updated_at = :now_dt
+            WHERE id = :b_id
+              AND (reserved_until IS NULL OR reserved_until < :now_dt);
+            """
+            up_res = await session.execute(
+                text(up_sql),
+                {
+                    "b_id": b_id,
+                    "worker_id": worker_id,
+                    "reserved_until": reserved_until,
+                    "now_dt": now_dt,
+                },
+            )
+            if up_res.rowcount > 0:
+                await session.commit()
+                res_row = dict(row)
+                res_row["reserved_by"] = worker_id
+                res_row["reserved_until"] = reserved_until
+                return res_row
+            else:
+                await session.rollback()
+                await session.execute(text("SELECT 1;"))
+
+        return None
 
 
 async def dial_progressive(

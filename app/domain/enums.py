@@ -23,6 +23,16 @@ class CallState(str, Enum):
     FAILED = "FAILED"
     CANCELLED = "CANCELLED"
     ABANDONED = "ABANDONED"
+    UNKNOWN = "UNKNOWN"  # Ambiguous outcome during provider timeout, requires reconciliation
+
+
+class DialTaskState(str, Enum):
+    PENDING = "PENDING"
+    PROCESSING = "PROCESSING"
+    DISPATCHED = "DISPATCHED"
+    FAILED = "FAILED"
+    RECONCILING = "RECONCILING"
+    CANCELLED = "CANCELLED"
 
 
 class CampaignMode(str, Enum):

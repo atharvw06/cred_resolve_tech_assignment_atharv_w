@@ -78,15 +78,16 @@ class PacingWorker:
             clock=self.clock,
         )
 
-        # Step 3: Insert dial decision audit log
+        # Step 3: Insert dial decision audit log and durable dial tasks
         circuit_state = self.providers.get(camp.provider, getattr(self.providers.get(camp.provider), "state", "CLOSED"))
         if hasattr(circuit_state, "state"):
             circuit_state = circuit_state.state
         elif not isinstance(circuit_state, str):
             circuit_state = "CLOSED"
 
+        decision_id = str(uuid.uuid4())
         decision = DialDecision(
-            id=str(uuid.uuid4()),
+            id=decision_id,
             campaign_id=campaign_id,
             tick_id=tick_id,
             decided_at=self.clock.now(),
@@ -105,22 +106,40 @@ class PacingWorker:
             mode_used=approval.mode_used,
         )
         session.add(decision)
+
+        # Create durable DialTasks with stable idempotency keys inside decision transaction
+        from app.domain.models import DialTask
+        if approval.n_approved > 0:
+            for idx in range(approval.n_approved):
+                task = DialTask(
+                    id=str(uuid.uuid4()),
+                    campaign_id=campaign_id,
+                    decision_id=decision_id,
+                    idempotency_key=f"task_{campaign_id}_{tick_id}_{idx}",
+                    state="PENDING",
+                    provider=camp.provider,
+                    created_at=self.clock.now(),
+                )
+                session.add(task)
+
+        # Commit decision transaction quickly to release campaign advisory lock
         await session.commit()
 
-        # Step 4: Dial approved calls
+        # Step 4: Deliver approved tasks outside of decision advisory transaction lock
         dials_placed = 0
-        provider = self.providers.get(camp.provider)
-        if approval.n_approved > 0 and provider:
+        if approval.n_approved > 0:
+            from app.worker.dial_task_worker import DialTaskWorker
+            task_worker = DialTaskWorker(
+                worker_id=self.worker_id,
+                clock=self.clock,
+                providers=self.providers,
+            )
             for _ in range(approval.n_approved):
-                call_id = await dial_progressive(
-                    session=session,
-                    campaign_id=campaign_id,
-                    provider=provider,
-                    worker_id=self.worker_id,
-                    clock=self.clock,
-                )
-                if call_id:
-                    dials_placed += 1
+                task_claim = await task_worker.claim_task(session, campaign_id=campaign_id)
+                if task_claim:
+                    call_id = await task_worker.execute_task(task_claim, session)
+                    if call_id:
+                        dials_placed += 1
 
         return {
             "campaign_id": campaign_id,

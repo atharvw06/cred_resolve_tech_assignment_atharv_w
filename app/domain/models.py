@@ -72,8 +72,14 @@ class Borrower(Base):
     phone = Column(Text, nullable=False)
     priority = Column(Integer, nullable=False, default=0)
     call_count = Column(Integer, nullable=False, default=0)
+    max_attempts = Column(Integer, nullable=False, default=3)
+    suppressed = Column(Boolean, nullable=False, default=False)
+    retry_after = Column(DateTime(timezone=True), nullable=True)
+    reserved_by = Column(Text, nullable=True)
+    reserved_until = Column(DateTime(timezone=True), nullable=True)
     last_called_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, default=utc_now)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=utc_now, onupdate=utc_now)
 
     campaign = relationship("Campaign", back_populates="borrowers")
     calls = relationship("Call", back_populates="borrower")
@@ -148,3 +154,47 @@ class Lease(Base):
     expires_at = Column(DateTime(timezone=True), nullable=False)
     released = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime(timezone=True), nullable=False, default=utc_now)
+
+
+class DialTask(Base):
+    __tablename__ = "dial_tasks"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    campaign_id = Column(String(36), ForeignKey("campaigns.id"), nullable=True)
+    decision_id = Column(String(36), ForeignKey("dial_decisions.id"), nullable=True)
+    idempotency_key = Column(Text, nullable=False, unique=True)
+    state = Column(String(20), nullable=False, default="PENDING")
+    agent_id = Column(String(36), ForeignKey("agents.id"), nullable=True)
+    borrower_id = Column(String(36), ForeignKey("borrowers.id"), nullable=True)
+    call_id = Column(String(36), ForeignKey("calls.id"), nullable=True)
+    claimed_by = Column(Text, nullable=True)
+    claimed_until = Column(DateTime(timezone=True), nullable=True)
+    attempt_count = Column(Integer, nullable=False, default=0)
+    provider = Column(String(20), nullable=False, default="A")
+    provider_call_id = Column(Text, nullable=True)
+    last_error = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=utc_now)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=utc_now, onupdate=utc_now)
+
+
+class AuditEvent(Base):
+    __tablename__ = "audit_events"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    campaign_id = Column(String(36), ForeignKey("campaigns.id"), nullable=True)
+    event_type = Column(Text, nullable=False)
+    severity = Column(String(20), nullable=False, default="INFO")
+    actor = Column(Text, nullable=False)
+    payload = Column(JSON, nullable=False, default=dict)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=utc_now)
+
+
+class ProviderHealthSnapshot(Base):
+    __tablename__ = "provider_health_snapshots"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    provider = Column(String(20), nullable=False)
+    circuit_state = Column(String(20), nullable=False)
+    latency_p95_ms = Column(Float, nullable=False)
+    failure_rate_ewma = Column(Float, nullable=False)
+    recorded_at = Column(DateTime(timezone=True), nullable=False, default=utc_now)

@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
+from datetime import timedelta
 import math
 from typing import Any
 from sqlalchemy import func, select
@@ -133,6 +134,25 @@ class SafetyController:
         )
         C = (await session.scalar(stmt_c)) or 0
 
+        # Step 1b: Reconstruct rolling abandonment rate directly from database calls
+        window_start = clk.now() - timedelta(minutes=15)
+        stmt_abn = (
+            select(
+                func.count().filter(Call.state == "ABANDONED"),
+                func.count().filter(Call.state.in_(["ANSWERED", "CONNECTED", "COMPLETED", "ABANDONED"])),
+            )
+            .select_from(Call)
+            .where(Call.campaign_id == campaign_id, Call.created_at >= window_start)
+        )
+        abn_row = (await session.execute(stmt_abn)).first()
+        abn_count = abn_row[0] if abn_row else 0
+        total_answered_in_window = abn_row[1] if abn_row else 0
+        abandonment_rate = (
+            (abn_count / total_answered_in_window)
+            if total_answered_in_window > 0
+            else 0.0
+        )
+
         # Step 2: Fetch campaign parameters
         camp = await session.get(Campaign, campaign_id)
         if not camp:
@@ -177,4 +197,5 @@ class SafetyController:
             h_hat=camp.h_hat,
             circuit_state=circuit_state,
             is_stale=is_stale,
+            abandonment_rate=abandonment_rate,
         )

@@ -33,6 +33,12 @@ CALL_TRANSITIONS: dict[tuple[str, str], str] = {
     ("ANSWERED", "connect"): "CONNECTED",  # agent bound (predictive path)
     ("ANSWERED", "abandon"): "ABANDONED",  # no agent — COMPLIANCE EVENT, feeds AIMD
     ("CONNECTED", "complete"): "COMPLETED",
+    # Ambiguous timeout and provider reconciliation path
+    ("INITIATED", "timeout"): "UNKNOWN",
+    ("RINGING", "timeout"): "UNKNOWN",
+    ("UNKNOWN", "answer"): "ANSWERED",
+    ("UNKNOWN", "fail"): "FAILED",
+    ("UNKNOWN", "complete"): "COMPLETED",
 }
 
 TERMINAL_CALL_STATES: frozenset[str] = frozenset({"COMPLETED", "FAILED", "CANCELLED", "ABANDONED"})
