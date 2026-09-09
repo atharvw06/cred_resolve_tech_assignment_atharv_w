@@ -65,12 +65,12 @@
 **Files:** `app/providers/base.py`, `provider_a.py`, `provider_b.py`, `circuit_breaker.py`, `app/worker/event_ingest_worker.py`, `tests/test_event_chaos.py`, `tests/test_circuit_breaker.py`.
 
 **DONE criteria (chaos convergence):**
-- [ ] Sequence `ANSWERED, ANSWERED, ANSWERED, COMPLETED` (same `provider_call_id`) → final call state `COMPLETED`, 3 duplicates no-op.
-- [ ] Sequence `COMPLETED, ANSWERED, RINGING` (reordered) → final call state `COMPLETED`, late events log-and-ignored.
-- [ ] Worker crashes after `ANSWERED` (kill txn mid-apply, re-run) → converges to `CONNECTED` (if agent available) or `ABANDONED` (if not).
-- [ ] Circuit breaker: 5 consecutive `originate` failures → `CLOSED → OPEN`. Subsequent calls blocked. After cooldown, `HALF_OPEN` probe succeeds → `CLOSED`.
-- [ ] Provider B knobs (latency_mean_ms, timeout_prob, failure_prob, duplicate_event_prob, reorder_prob) all configurable per-instance.
-- [ ] Event ingest is one transaction: `INSERT ... ON CONFLICT (event_id) DO NOTHING RETURNING id` + FSM apply in same txn. Crash ⇒ rollback ⇒ safe retry.
+- [x] Sequence `ANSWERED, ANSWERED, ANSWERED, COMPLETED` (same `provider_call_id`) → final call state `COMPLETED`, 3 duplicates no-op.
+- [x] Sequence `COMPLETED, ANSWERED, RINGING` (reordered) → final call state `COMPLETED`, late events log-and-ignored.
+- [x] Worker crashes after `ANSWERED` (kill txn mid-apply, re-run) → converges to `CONNECTED` (if agent available) or `ABANDONED` (if not).
+- [x] Circuit breaker: 5 consecutive `originate` failures → `CLOSED → OPEN`. Subsequent calls blocked. After cooldown, `HALF_OPEN` probe succeeds → `CLOSED`.
+- [x] Provider B knobs (latency_mean_ms, timeout_prob, failure_prob, duplicate_event_prob, reorder_prob) all configurable per-instance.
+- [x] Event ingest is one transaction: `INSERT ... ON CONFLICT (event_id) DO NOTHING RETURNING id` + FSM apply in same txn. Crash ⇒ rollback ⇒ safe retry.
 
 ---
 
